@@ -1,0 +1,22 @@
+{
+  // Ambiente pronto para o GitHub Codespaces (ou VS Code Dev Containers).
+  // Sobe um container com Python + Node e outro com o Postgres.
+  "name": "Parking Lot",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" }
+  },
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "forwardPorts": [8000, 5173],
+  "portsAttributes": {
+    "8000": { "label": "Parking Lot", "onAutoForward": "openBrowser" },
+    "5173": { "label": "Vite (desenvolvimento)" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "charliermarsh.ruff"]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/python:3.12
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    environment:
+      # Variáveis de ambiente têm prioridade sobre o backend/.env.
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/parking_lot
+      TEST_DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/parking_lot_test
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: parking_lot
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../docker/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  pgdata:

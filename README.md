@@ -3,7 +3,16 @@
 Gestor visual de tarefas em forma de edifício-garagem para o time de Adm. de Vendas.
 Especificação completa em [`docs/SPEC.md`](docs/SPEC.md).
 
-## Como rodar
+## Rodar sem instalar nada (GitHub Codespaces)
+
+1. No GitHub, abra o repositório e clique em **Code → Codespaces → Create codespace** no branch desejado.
+2. Aguarde a preparação (alguns minutos na primeira vez: instala dependências, cria o banco e roda o seed).
+3. No terminal do Codespace: `bash .devcontainer/start.sh`
+4. Abra a porta **8000** na aba *Ports* (ou no aviso que aparece). Logins do seed abaixo.
+
+O Codespace hiberna quando fica parado; ao reabrir, rode o passo 3 de novo.
+
+## Como rodar localmente
 
 ```bash
 # 1. Banco
