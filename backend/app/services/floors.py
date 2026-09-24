@@ -38,9 +38,7 @@ def occupied_counts(db: Session, floor_ids: list[int]) -> dict[int, int]:
 
 def occupied_spot_ids(db: Session, floor_id: int) -> set[int]:
     return set(
-        db.scalars(
-            select(CarSpot.spot_id).join(Spot, Spot.id == CarSpot.spot_id).where(Spot.floor_id == floor_id)
-        )
+        db.scalars(select(CarSpot.spot_id).join(Spot, Spot.id == CarSpot.spot_id).where(Spot.floor_id == floor_id))
     )
 
 
@@ -50,9 +48,7 @@ def sync_spots(db: Session, floor: Floor) -> None:
     existing = {spot.position: spot for spot in floor.spots}
     for position in range(floor.capacity):
         if position not in existing:
-            floor.spots.append(
-                Spot(position=position, row=position // per_row, column=position % per_row)
-            )
+            floor.spots.append(Spot(position=position, row=position // per_row, column=position % per_row))
     to_remove = [spot for pos, spot in existing.items() if pos >= floor.capacity]
     if to_remove:
         occupied = occupied_spot_ids(db, floor.id)

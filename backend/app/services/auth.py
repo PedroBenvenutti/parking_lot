@@ -19,9 +19,7 @@ _ALGORITHM = "HS256"
 def hash_password(password: str) -> str:
     salt = secrets.token_bytes(16)
     digest = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, _ITERATIONS)
-    return "pbkdf2_sha256${}${}${}".format(
-        _ITERATIONS, base64.b64encode(salt).decode(), base64.b64encode(digest).decode()
-    )
+    return f"pbkdf2_sha256${_ITERATIONS}${base64.b64encode(salt).decode()}${base64.b64encode(digest).decode()}"
 
 
 def verify_password(password: str, stored: str) -> bool:
@@ -29,9 +27,7 @@ def verify_password(password: str, stored: str) -> bool:
         _, iterations, salt_b64, digest_b64 = stored.split("$")
     except ValueError:
         return False
-    digest = hashlib.pbkdf2_hmac(
-        "sha256", password.encode(), base64.b64decode(salt_b64), int(iterations)
-    )
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode(), base64.b64decode(salt_b64), int(iterations))
     return hmac.compare_digest(digest, base64.b64decode(digest_b64))
 
 

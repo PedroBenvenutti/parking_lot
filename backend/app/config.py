@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/parking_lot"
     test_database_url: str = "postgresql+psycopg://postgres:postgres@localhost:5432/parking_lot_test"
 
-    secret_key: str = "dev-secret-change-me"
+    secret_key: str = "dev-secret-change-me-in-production-please"
     token_ttl_minutes: int = 60 * 12
 
     # Tempo parado vence após N dias úteis sem movimentação.

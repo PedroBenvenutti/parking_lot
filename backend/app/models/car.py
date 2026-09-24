@@ -9,7 +9,6 @@ from sqlalchemy import (
     Sequence,
     String,
     Text,
-    func,
 )
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -48,9 +47,7 @@ class Car(Base):
     car_spots: Mapped[list["CarSpot"]] = relationship(
         back_populates="car", cascade="all, delete-orphan", lazy="selectin"
     )
-    events: Mapped[list["Event"]] = relationship(
-        back_populates="car", order_by="Event.timestamp, Event.id"
-    )
+    events: Mapped[list["Event"]] = relationship(back_populates="car", order_by="Event.timestamp, Event.id")
 
     @property
     def spots(self) -> list["Spot"]:  # noqa: F821
@@ -63,9 +60,7 @@ class CarSpot(Base):
     __tablename__ = "car_spots"
 
     car_id: Mapped[int] = mapped_column(ForeignKey("cars.id", ondelete="CASCADE"), primary_key=True)
-    spot_id: Mapped[int] = mapped_column(
-        ForeignKey("spots.id", ondelete="RESTRICT"), primary_key=True, unique=True
-    )
+    spot_id: Mapped[int] = mapped_column(ForeignKey("spots.id", ondelete="RESTRICT"), primary_key=True, unique=True)
 
     car: Mapped[Car] = relationship(back_populates="car_spots")
     spot: Mapped["Spot"] = relationship(lazy="joined")  # noqa: F821

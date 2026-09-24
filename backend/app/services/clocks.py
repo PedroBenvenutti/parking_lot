@@ -39,9 +39,7 @@ def business_seconds(start: datetime, end: datetime, tz: ZoneInfo) -> float:
     cursor = start.astimezone(tz)
     end_local = end.astimezone(tz)
     while cursor < end_local:
-        next_midnight = datetime.combine(
-            cursor.date() + timedelta(days=1), datetime.min.time(), tzinfo=tz
-        )
+        next_midnight = datetime.combine(cursor.date() + timedelta(days=1), datetime.min.time(), tzinfo=tz)
         segment_end = min(next_midnight, end_local)
         if cursor.weekday() < 5:
             total += (segment_end - cursor).total_seconds()
@@ -104,9 +102,7 @@ def stale_limit_seconds(settings: Settings | None = None) -> int:
     return settings.stale_business_days * 24 * 60 * 60
 
 
-def clock_state(
-    car: Car, events: Sequence[Event], now: datetime, settings: Settings | None = None
-) -> ClockState:
+def clock_state(car: Car, events: Sequence[Event], now: datetime, settings: Settings | None = None) -> ClockState:
     settings = settings or get_settings()
     if car.status == CarStatus.CONCLUIDO:
         return ClockState(False, 0, False, None)
@@ -124,11 +120,7 @@ def clock_states(db: Session, cars: Sequence[Car], now: datetime) -> dict[int, C
     if not cars:
         return {}
     by_car: dict[int, list[Event]] = {car.id: [] for car in cars}
-    rows = db.scalars(
-        select(Event)
-        .where(Event.car_id.in_(by_car.keys()))
-        .order_by(Event.timestamp, Event.id)
-    )
+    rows = db.scalars(select(Event).where(Event.car_id.in_(by_car.keys())).order_by(Event.timestamp, Event.id))
     for event in rows:
         by_car[event.car_id].append(event)
     return {car.id: clock_state(car, by_car[car.id], now) for car in cars}

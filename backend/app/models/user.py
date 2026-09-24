@@ -30,6 +30,4 @@ class ValetAssignment(Base):
     __tablename__ = "valet_assignments"
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
-    task_type_id: Mapped[int] = mapped_column(
-        ForeignKey("task_types.id", ondelete="CASCADE"), primary_key=True
-    )
+    task_type_id: Mapped[int] = mapped_column(ForeignKey("task_types.id", ondelete="CASCADE"), primary_key=True)

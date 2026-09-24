@@ -10,11 +10,11 @@ os.environ["CLOCK_TICK_SECONDS"] = "0"
 get_settings.cache_clear()
 
 import pytest  # noqa: E402
-from alembic import command  # noqa: E402
 from alembic.config import Config  # noqa: E402
 from sqlalchemy import text  # noqa: E402
 from sqlalchemy.orm import Session  # noqa: E402
 
+from alembic import command  # noqa: E402
 from app.db import SessionLocal, engine  # noqa: E402
 from app.models import Effort, Priority, TaskType, User  # noqa: E402
 from app.services import cars as car_service  # noqa: E402

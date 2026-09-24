@@ -28,9 +28,7 @@ def load_principal(db: Session, user_id: int) -> Principal:
     if user is None:
         raise Unauthorized("Usuário não encontrado")
     floor_id = db.scalar(select(Floor.id).where(Floor.owner_id == user_id))
-    type_ids = db.scalars(
-        select(ValetAssignment.task_type_id).where(ValetAssignment.user_id == user_id)
-    ).all()
+    type_ids = db.scalars(select(ValetAssignment.task_type_id).where(ValetAssignment.user_id == user_id)).all()
     return Principal(
         user_id=user.id,
         name=user.name,

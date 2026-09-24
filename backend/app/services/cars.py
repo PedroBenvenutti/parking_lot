@@ -114,11 +114,7 @@ def patio_cars(db: Session, p: Principal) -> list[Car]:
 def floor_cars(db: Session, p: Principal, floor_id: int) -> list[Car]:
     ensure_can_view_floor(p, floor_id)
     return list(
-        db.scalars(
-            select(Car)
-            .where(Car.floor_id == floor_id, Car.status == CarStatus.ESTACIONADO)
-            .order_by(Car.id)
-        )
+        db.scalars(select(Car).where(Car.floor_id == floor_id, Car.status == CarStatus.ESTACIONADO).order_by(Car.id))
     )
 
 
@@ -195,9 +191,7 @@ def _target_spots(db: Session, floor: Floor, spot_id: int, effort: Effort) -> li
     if effort.spots_needed == 1:
         return [spot]
     neighbor = db.scalar(
-        select(Spot).where(
-            Spot.floor_id == floor.id, Spot.row == spot.row, Spot.column == spot.column + 1
-        )
+        select(Spot).where(Spot.floor_id == floor.id, Spot.row == spot.row, Spot.column == spot.column + 1)
     )
     if neighbor is None:
         raise Conflict(TRUCK_NEEDS_TWO)
@@ -268,9 +262,7 @@ def _get_owned_parked_car(db: Session, p: Principal, car_id: int) -> Car:
     return car
 
 
-def move_car(
-    db: Session, p: Principal, car_id: int, spot_id: int, now: datetime | None = None
-) -> CarChange | None:
+def move_car(db: Session, p: Principal, car_id: int, spot_id: int, now: datetime | None = None) -> CarChange | None:
     """Dono do andar troca o carro de vaga dentro do próprio andar."""
     now = now or utcnow()
     car = _get_owned_parked_car(db, p, car_id)
@@ -283,9 +275,7 @@ def move_car(
     own = {s.id for s in car.spots}
     _ensure_free(targets, occupied_spot_ids(db, floor.id) - own, car.effort)
     _assign_spots(db, car, targets)
-    event = record_event(
-        db, car, EventType.MOVED_SPOT, p.user_id, now, {"before": before, "after": after}
-    )
+    event = record_event(db, car, EventType.MOVED_SPOT, p.user_id, now, {"before": before, "after": after})
     db.flush()
     return CarChange(car, event, car.status, car.floor_id)
 
@@ -350,9 +340,7 @@ def update_car(
     return CarChange(car, event, car.status, car.floor_id)
 
 
-def set_hazard(
-    db: Session, p: Principal, car_id: int, on: bool, now: datetime | None = None
-) -> CarChange | None:
+def set_hazard(db: Session, p: Principal, car_id: int, on: bool, now: datetime | None = None) -> CarChange | None:
     now = now or utcnow()
     car = _get_owned_parked_car(db, p, car_id)
     if car.hazard_on == on:
@@ -379,9 +367,7 @@ def complete_car(db: Session, p: Principal, car_id: int, now: datetime | None = 
     return CarChange(car, event, CarStatus.ESTACIONADO, car.floor_id)
 
 
-def return_to_patio(
-    db: Session, p: Principal, car_id: int, reason: str, now: datetime | None = None
-) -> CarChange:
+def return_to_patio(db: Session, p: Principal, car_id: int, reason: str, now: datetime | None = None) -> CarChange:
     now = now or utcnow()
     car = _get_car(db, car_id, lock=True)
     ensure_can_view_car(p, car)

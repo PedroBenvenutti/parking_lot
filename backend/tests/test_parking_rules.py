@@ -25,9 +25,7 @@ def setup(db, make_user, make_type):
 def test_valet_cannot_park_type_outside_responsibility(db, setup, make_car, principal):
     car_id = make_car(setup["owner"], setup["nota"])
     with pytest.raises(Forbidden):
-        car_service.park_car(
-            db, principal(setup["valet"]), car_id, setup["floor"].id, spot_id(db, setup["floor"], 0)
-        )
+        car_service.park_car(db, principal(setup["valet"]), car_id, setup["floor"].id, spot_id(db, setup["floor"], 0))
 
 
 def test_valet_parks_type_under_responsibility(db, setup, make_car, principal):
