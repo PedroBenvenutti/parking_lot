@@ -1,0 +1,164 @@
+:root {
+  --bg: #eef0f3;
+  --panel: #ffffff;
+  --text: #1f2933;
+  --muted: #6b7785;
+  --border: #d6dbe1;
+  --accent: #2563eb;
+  --danger: #d83b3b;
+  --asphalt: #3b4148;
+  --asphalt-light: #4a5159;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+h1, h2, h3, h4 { margin: 0 0 8px; }
+h2 { font-size: 1.1rem; }
+h3 { font-size: 1rem; }
+h4 { font-size: 0.9rem; margin-top: 16px; }
+
+button {
+  font: inherit;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+button:hover { background: #f5f7fa; }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.primary:hover { background: #1d4fd0; }
+button:disabled { opacity: 0.6; cursor: default; }
+
+input, select, textarea {
+  font: inherit;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-top: 4px;
+}
+input[type="checkbox"] { width: auto; margin: 0 6px 0 0; }
+label { display: block; margin-bottom: 10px; font-size: 0.9rem; }
+label.inline { display: flex; align-items: center; }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.8rem; }
+.danger { color: var(--danger); font-weight: 600; }
+.error { color: var(--danger); }
+.hint { background: #e8f0ff; border: 1px solid #c6d8ff; padding: 8px 10px; border-radius: 6px; font-size: 0.9rem; }
+.loading { padding: 40px; text-align: center; }
+
+/* --- estrutura --- */
+.app { display: flex; flex-direction: column; height: 100vh; }
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 20px; background: var(--panel); border-bottom: 1px solid var(--border);
+}
+.topbar h1 { font-size: 1.2rem; margin: 0; }
+.spacer { flex: 1; }
+.layout { display: grid; grid-template-columns: 240px 1fr 360px; flex: 1; min-height: 0; }
+.center { overflow: auto; padding: 20px; }
+.sidebar { overflow: auto; border-left: 1px solid var(--border); background: var(--panel); }
+
+/* --- prédio --- */
+.building { overflow: auto; padding: 16px; background: var(--panel); border-right: 1px solid var(--border); }
+.floor-btn {
+  display: grid; grid-template-columns: 36px 1fr auto; grid-template-rows: auto auto;
+  gap: 2px 8px; align-items: center; width: 100%; text-align: left; margin-bottom: 6px;
+}
+.floor-btn.active { border-color: var(--accent); background: #eef4ff; }
+.floor-num { grid-row: span 2; font-weight: 700; font-size: 1.1rem; color: var(--muted); }
+.floor-owner { font-size: 0.9rem; }
+.occupancy { height: 6px; background: #e3e7ec; border-radius: 3px; overflow: hidden; }
+.occupancy-bar { display: block; height: 100%; background: #4caf7a; }
+.occupancy-bar.full { background: var(--danger); }
+
+/* --- andar --- */
+.floor-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.badge { background: #e3e7ec; border-radius: 12px; padding: 2px 10px; font-size: 0.85rem; }
+.badge.full { background: var(--danger); color: #fff; font-weight: 600; }
+.floor-svg { width: 100%; height: auto; display: block; border-radius: 10px; box-shadow: 0 2px 8px #0002; }
+.asphalt { fill: var(--asphalt); }
+.ramp { fill: var(--asphalt-light); }
+.ramp-label { fill: #cfd5dc; font-size: 13px; font-weight: 700; text-anchor: middle; letter-spacing: 2px; }
+.ramp-arrow { fill: #9aa3ad; font-size: 26px; text-anchor: middle; }
+.lane-line { stroke: #e8c547; stroke-width: 2; stroke-dasharray: 14 12; opacity: 0.6; }
+.spot { fill: transparent; }
+.spot-target { fill: #4caf7a55; stroke: #7dffb0; stroke-width: 2; }
+.spot-target:hover { fill: #4caf7a99; }
+.spot-line { stroke: #f2f2f2; stroke-width: 3; }
+.spot-number { fill: #aab2bb; font-size: 12px; text-anchor: middle; }
+.empty-floor { fill: #aab2bb; font-size: 18px; text-anchor: middle; }
+
+.vehicle-icon { font-size: 20px; text-anchor: middle; pointer-events: none; }
+.vehicle-selected { fill: none; stroke: #ffffff; stroke-width: 3; stroke-dasharray: 6 4; }
+.vehicle-stale { filter: grayscale(0.85) brightness(0.9); opacity: 0.75; }
+.plate { fill: #fff; stroke: #333; stroke-width: 1; }
+.plate-text { font-size: 9px; font-weight: 700; text-anchor: middle; font-family: ui-monospace, monospace; fill: #111; }
+.badge-text { fill: #fff; font-size: 11px; font-weight: 700; text-anchor: middle; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+.legend-item { margin-left: 10px; display: inline-flex; align-items: center; gap: 4px; }
+.swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
+
+/* --- pátio --- */
+.patio { padding: 16px; }
+.count { background: #e3e7ec; border-radius: 10px; padding: 0 8px; font-size: 0.85rem; }
+.patio-list { display: flex; flex-direction: column; gap: 8px; }
+.patio-card { display: flex; gap: 10px; align-items: center; text-align: left; width: 100%; padding: 8px; }
+.patio-card.selected { border-color: var(--accent); background: #eef4ff; box-shadow: 0 0 0 2px #2563eb44; }
+.patio-vehicle { width: 60px; height: 60px; flex-shrink: 0; background: var(--asphalt); border-radius: 6px; }
+.patio-title { font-size: 0.9rem; }
+
+/* --- painel do carro --- */
+.car-panel { padding: 16px; border-bottom: 1px solid var(--border); }
+.car-panel header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.plate-big {
+  font-family: ui-monospace, monospace; font-weight: 700; border: 2px solid #333;
+  border-radius: 4px; padding: 2px 8px; background: #fff;
+}
+.icon-btn { border: none; background: none; font-size: 1.1rem; }
+.description { white-space: pre-wrap; font-size: 0.9rem; }
+dl { display: grid; grid-template-columns: 90px 1fr; gap: 4px 8px; font-size: 0.9rem; margin: 8px 0; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+.meter { background: #f6f7f9; border-radius: 8px; padding: 10px; }
+.clock { display: flex; flex-direction: column; font-size: 0.85rem; padding: 4px 0; }
+.clock.danger { color: var(--danger); font-weight: 600; }
+.clock.stale { color: #6b5d45; font-weight: 600; }
+.clock.hazard { color: #a36d00; font-weight: 600; }
+.actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; }
+.actions.wrap { flex-wrap: wrap; justify-content: flex-start; }
+.panel-form { margin-top: 12px; }
+.row { display: flex; gap: 12px; }
+.row > label { flex: 1; }
+.events { padding-left: 18px; font-size: 0.85rem; margin: 0; }
+.events li { margin-bottom: 6px; }
+
+/* --- modal / login --- */
+.modal-backdrop { position: fixed; inset: 0; background: #0006; display: flex; align-items: center; justify-content: center; z-index: 10; }
+.modal { background: var(--panel); border-radius: 10px; padding: 24px; width: 440px; max-width: 95vw; box-shadow: 0 10px 30px #0003; }
+.login { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.login .modal button { width: 100%; margin-top: 8px; }
+
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  padding: 10px 18px; border-radius: 8px; color: #fff; box-shadow: 0 4px 12px #0003; z-index: 20;
+}
+.toast.error { background: var(--danger); }
+.toast.info { background: #2f855a; }
+
+/* --- configuração --- */
+.admin section { background: var(--panel); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+.admin table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.admin th, .admin td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.admin .narrow { width: 80px; display: inline-block; }
+.small-btn { margin-left: 8px; padding: 4px 10px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; margin: 0; border: 1px solid var(--border); border-radius: 14px; padding: 2px 8px; font-size: 0.8rem; }
+.admin-forms { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.card { background: var(--panel); border-radius: 10px; padding: 16px; }
