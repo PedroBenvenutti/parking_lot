@@ -61,11 +61,15 @@ Não avance de etapa sem os testes da etapa anterior passando.
 ## Comandos
 
 ```bash
-docker compose up -d db
-cd backend && alembic upgrade head && python seed.py
-cd backend && uvicorn app.main:app --reload
-cd backend && pytest
-cd frontend && npm run dev
+docker compose up -d db                      # Postgres (cria também o banco parking_lot_test)
+cd backend && python -m venv .venv && .venv/bin/pip install -r requirements.txt
+cd backend && cp .env.example .env           # ajuste SECRET_KEY
+cd backend && .venv/bin/alembic upgrade head && .venv/bin/python seed.py
+cd backend && .venv/bin/uvicorn app.main:app --reload
+cd backend && .venv/bin/pytest               # usa o banco parking_lot_test
+cd backend && .venv/bin/ruff check . && .venv/bin/ruff format --check .
+cd frontend && npm install && npm run dev    # http://localhost:5173 (proxy para o backend em :8000)
+cd frontend && npm run build                 # gera frontend/dist, servido pelo FastAPI em produção
 ```
 
 Atualize esta seção se os comandos mudarem.
