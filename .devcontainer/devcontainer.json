@@ -9,10 +9,10 @@
     "ghcr.io/devcontainers/features/node:1": { "version": "20" }
   },
   "postCreateCommand": "bash .devcontainer/setup.sh",
-  "forwardPorts": [8000, 5173],
+  // Só a 8000: o backend serve a API, o WebSocket e a interface já compilada.
+  "forwardPorts": [8000],
   "portsAttributes": {
-    "8000": { "label": "Parking Lot", "onAutoForward": "openBrowser" },
-    "5173": { "label": "Vite (desenvolvimento)" }
+    "8000": { "label": "Parking Lot", "onAutoForward": "openBrowser" }
   },
   "customizations": {
     "vscode": {
